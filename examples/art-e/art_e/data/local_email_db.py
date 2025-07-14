@@ -1,4 +1,7 @@
-import sqlite3
+try:
+    import pysqlite3 as sqlite3
+except ImportError:
+    import sqlite3
 import os
 import logging
 from datasets import load_dataset, Dataset, Features, Value, Sequence
@@ -66,7 +69,7 @@ CREATE TRIGGER emails_au AFTER UPDATE ON emails BEGIN
     UPDATE emails_fts SET subject=new.subject, body=new.body WHERE rowid=old.id;
 END;
 
-INSERT INTO emails_fts (rowid, subject, body) SELECT id, subject, body FROM emails;
+INSERT INTO emails_fts (emails_fts) VALUES ('rebuild');
 """
 
 

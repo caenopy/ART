@@ -1,4 +1,7 @@
-import sqlite3
+try:
+    import pysqlite3 as sqlite3
+except ImportError:
+    import sqlite3
 import logging
 from typing import List, Optional
 from dataclasses import dataclass

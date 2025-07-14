@@ -134,6 +134,9 @@ async def ensure_bucket_exists(
     if profile:
         cmd += ["--profile", profile]
     cmd += ["s3api", "head-bucket", "--bucket", s3_bucket]
+    
+    # Add explicit region to avoid issues
+    cmd += ["--region", "us-east-2"]
 
     result = await asyncio.create_subprocess_exec(*cmd, stdout=DEVNULL, stderr=DEVNULL)
     return_code = await result.wait()
@@ -147,6 +150,9 @@ async def ensure_bucket_exists(
     if profile:
         cmd += ["--profile", profile]
     cmd += ["s3api", "create-bucket", "--bucket", s3_bucket]
+    
+    # Add explicit region for bucket creation too
+    cmd += ["--region", "us-east-2", "--create-bucket-configuration", "LocationConstraint=us-east-2"]
 
     result = await asyncio.create_subprocess_exec(*cmd)
     return_code = await result.wait()
